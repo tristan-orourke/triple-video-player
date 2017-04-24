@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="video-parent">
+        <div class="video-unit">
+            <video id="vid1" width="150" height="100" loop autoplay>
+                <source src="videos/video1.mp4" type="video/mp4">
+            </video>
+            <input id="volume1" class="volume" type=range min="0" max="100" step="1" oninput="changeVolume(\"vid1\", this.value)" onchange="changeVolume(\"vid1\", this.value)">
+        </div>
+        <div class="video-unit">
+            <video id="vid2" width="150" height="100" loop autoplay>
+                <source src="videos/video2.mp4" type="video/mp4">
+            </video>
+            <input id="volume2" class="volume" type=range min="0" max="100" step="1" oninput="changeVolume(\"vid2\", this.value)" onchange="changeVolume(\"vid2\", this.value)">
+        </div>
+        <div class="video-unit">
+            <video id="vid3" width="150" height="100" loop autoplay>
+                <source src="videos/video3.mp4" type="video/mp4">
+            </video>
+            <input id="volume3" class="volume" type=range min="0" max="100" step="1" oninput="changeVolume(\"vid3\", this.value)" onchange="changeVolume(\"vid3\", this.value)">
+        </div>
+    </div>
+
+    <script>
+//        var vid1 = document.getElementById("vid1");
+//        var volume1 = document.getElementById("volume1");
+//        volume1.oninput = changeVolume(vid1, this.value);
+//        volume1.onchange = changeVolume(vid1, this.value);
+
+        function changeVolume(vidId, volume) {
+            var vid = document.getElementById(vidId);
+            vid.volume = volume / 100;
+        }
+    </script>
+</body>
+</html>

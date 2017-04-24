@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
+<body onload="startVideos()">
     <div class="video-parent">
         <div id="vid-unit-1" class="video-unit"></div>
         <div id="vid-unit-2" class="video-unit"></div>
@@ -14,45 +14,83 @@
     </div>
 
     <script type="text/javascript">
-        function changeVolume(vidId, volume) {
-            var vid = document.getElementById(vidId);
-            vid.volume = volume / 100;
+        function changeVolumeSlow(videoId, volume) {
+            console.log("changing volume");
+            var video = document.getElementById(videoId);
+            video.volume = volume / 100.0;
+            console.log(video.src + " : " + volume);
         }
         
-        function createVideo(source) {
-            var video = document.createElement("VIDEO"); 
+        function changeVolume(videoObj, volume) {
+            console.log("changing volume");
+            videoObj.volume = volume / 100.0;
+            console.log(videoObj.src + " : " + volume);
+        }
+
+        function createVideo(vidId, source) {
+            var video = document.createElement("VIDEO");
+            video.id = vidId;
             video.width = "150";
             video.height = "100";
             video.loop = true;
-            video.autoplay = true;
+            video.autoplay = false;
             video.src = source;
+            console.log(source);
             return video;
         }
-        
-        function createVolumeSlider() {
+
+        function createVolumeSlider(volumeId) {
             var volume = document.createElement("INPUT");
+            volume.id = volumeId;
             volume.type = "range";
             volume.min="0";
             volume.max="100";
             volume.step="1";
             return volume;
         }
+
+        function testLog() {
+            console.log("EVENT");
+        }
         
         var count = 3;
         
+        var allVideos = []
+
         var i;
         for (i=1; i<=3; i++) {
             var unitName = "vid-unit-" + i;
             var unit = document.getElementById(unitName);
-            
+
+            var videoId = "vid" + i;
             var videoSource = "videos/video" + i + ".mp4"
-            var video = createVideo(videoSource);
-            unit.appendChild(video);
+            var video = createVideo(videoId, videoSource);
             
-            var volume = createVolumeSlider();
+            var volumeId = "volume" + i;
+            var volume = createVolumeSlider(volumeId);
+            volume.videoId = videoId;
+            volume.videoReference = video;
+            
+            volume.addEventListener("change", function() {
+                changeVolume(this.videoReference, this.value);                
+            });
+            volume.addEventListener("input", function() {
+                changeVolume(this.videoReference, this.value);                
+            });
+            
+            unit.appendChild(video);
             unit.appendChild(volume);
+            allVideos.push(video);
         }
-    
+        
+        function startVideos(){
+            console.log(allVideos.length);
+            var i;
+            for (i=0; i<allVideos.length; i++){
+                allVideos[i].play();
+            }
+        }
+
 //        var vid1 = document.getElementById("vid1");
 //        var volume1 = document.getElementById("volume1");
 //        volume1.oninput = changeVolume(vid1, this.value);
